@@ -29,10 +29,12 @@ function common::parse_cmdline {
   # Populated via `common::parse_cmdline` and can be used inside hooks' functions
   ARGS=() HOOK_CONFIG=() FILES=()
 
+  echo @ - "$@"
   local argv
   argv=$(getopt -o a:,h: --long args:,hook-config: -- "$@") || return
   eval "set -- $argv"
-
+  echo argv - $argv
+  exit 1
   for argv; do
     case $argv in
       -a | --args)
