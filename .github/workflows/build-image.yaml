@@ -5,12 +5,14 @@ on:
   release:
     types:
       - created
-  schedule:
-    - cron: '00 00 * * *'
+  # schedule:
+  #   - cron: "00 00 * * *"
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      REPO: jno21/pre-commit-terraform
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -37,8 +39,8 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.IMAGE_TAG }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ env.REPO }}:${{ env.IMAGE_TAG }}
+            ghcr.io/${{ env.REPO }}:latest
       - name: Build and Push nightly
         if: github.event_name == 'schedule'
         uses: docker/build-push-action@v2
@@ -49,4 +51,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:nightly
+            ghcr.io/${{ env.REPO }}:nightly
